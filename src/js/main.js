@@ -7,7 +7,7 @@ import fragmentSource from "./shader/fragmentShader.glsl?raw";
 // const img = require("../images/image.jpg");
 import img from '../images/image.jpg';
 
-let renderer, scene, camera;
+let renderer, scene, camera, geometry;
 
 const canvas = document.querySelector("#canvas");
 
@@ -44,7 +44,7 @@ async function init(){
   controls.enableDamping = true;
 
   //ジオメトリ
-  const geometry = new THREE.PlaneGeometry(size.width, size.height, 40, 40);
+  geometry = new THREE.PlaneGeometry(size.width, size.height, 40, 40);
 
   //テクスチャ
   const loader = new THREE.TextureLoader();
@@ -62,7 +62,7 @@ async function init(){
       value: new THREE.Vector2(geometry.parameters.width, geometry.parameters.height)
     },
     uTexResolution: {
-      value: new THREE.Vector2(1024, 1024)
+      value: new THREE.Vector2(2048, 1024)
     },
   };
 
@@ -115,5 +115,6 @@ function onWindowResize() {
 
   size.width = window.innerWidth;
   size.height = window.innerHeight;
+
 }
 window.addEventListener("resize", onWindowResize);
