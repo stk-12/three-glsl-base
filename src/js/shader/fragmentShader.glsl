@@ -1,14 +1,14 @@
 varying vec2 vUv;
 uniform float uTime;
 uniform sampler2D uTex;
-uniform vec2 uGeoResolution;
+uniform vec2 uResolution;
 uniform vec2 uTexResolution;
 
 void main() {
   vec2 uv = vUv;
   vec2 ratio = vec2(
-    min((uGeoResolution.x / uGeoResolution.y) / (uTexResolution.x / uTexResolution.y), 1.0),
-    min((uGeoResolution.y / uGeoResolution.x) / (uTexResolution.y / uTexResolution.x), 1.0)
+    min((uResolution.x / uResolution.y) / (uTexResolution.x / uTexResolution.y), 1.0),
+    min((uResolution.y / uResolution.x) / (uTexResolution.y / uTexResolution.x), 1.0)
   );
 
   uv = vec2(

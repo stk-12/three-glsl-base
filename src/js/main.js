@@ -7,7 +7,7 @@ import fragmentSource from "./shader/fragmentShader.glsl?raw";
 // const img = require("../images/image.jpg");
 import img from '../images/image.jpg';
 
-let renderer, scene, camera, geometry;
+let renderer, scene, camera, fovRadian, distance, geometry, mesh;
 
 const canvas = document.querySelector("#canvas");
 
@@ -32,8 +32,8 @@ async function init(){
   //カメラ
   //ウインドウとWebGL座標を一致させる
   const fov = 45;
-  const fovRadian = (fov / 2) * (Math.PI / 180); //視野角をラジアンに変換
-  const distance = (size.height / 2) / Math.tan(fovRadian); //ウインドウぴったりのカメラ距離
+  fovRadian = (fov / 2) * (Math.PI / 180); //視野角をラジアンに変換
+  distance = (size.height / 2) / Math.tan(fovRadian); //ウインドウぴったりのカメラ距離
   camera = new THREE.PerspectiveCamera(fov, size.width / size.height, 1, distance * 2);
   camera.position.z = distance;
   camera.lookAt(new THREE.Vector3(0, 0, 0));
@@ -58,8 +58,8 @@ async function init(){
     uTex: {
       value: texture
     },
-    uGeoResolution: {
-      value: new THREE.Vector2(geometry.parameters.width, geometry.parameters.height)
+    uResolution: {
+      value: new THREE.Vector2(size.width, size.height)
     },
     uTexResolution: {
       value: new THREE.Vector2(2048, 1024)
@@ -75,7 +75,7 @@ async function init(){
   });
 
   //メッシュ
-  const mesh = new THREE.Mesh(geometry, material);
+  mesh = new THREE.Mesh(geometry, material);
   scene.add(mesh);
 
 
@@ -107,14 +107,21 @@ init();
 
 //リサイズ
 function onWindowResize() {
-  // レンダラーのサイズを修正
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  // カメラのアスペクト比を修正
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-
   size.width = window.innerWidth;
   size.height = window.innerHeight;
-
+  // レンダラーのサイズを修正
+  renderer.setSize(size.width, size.height);
+  // カメラのアスペクト比を修正
+  camera.aspect = size.width / size.height;
+  camera.updateProjectionMatrix();
+  // カメラの位置を調整
+  distance = (size.height / 2) / Math.tan(fovRadian); //ウインドウぴったりのカメラ距離
+  camera.position.z = distance;
+  // uniforms変数に反映
+  mesh.material.uniforms.uResolution.value.set(size.width, size.height);
+  // meshのscale設定
+  const scaleX = Math.round(size.width / mesh.geometry.parameters.width * 100) / 100 + 0.01;
+  const scaleY = Math.round(size.height / mesh.geometry.parameters.height * 100) / 100 + 0.01;
+  mesh.scale.set(scaleX, scaleY, 1);
 }
 window.addEventListener("resize", onWindowResize);
