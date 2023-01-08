@@ -1,4 +1,4 @@
-import '../css/style.css'
+import '../css/style.scss'
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import vertexSource from "./shader/vertexShader.glsl?raw";
