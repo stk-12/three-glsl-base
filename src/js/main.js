@@ -1,8 +1,8 @@
 import '../css/style.scss'
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import vertexSource from "./shader/vertexShader.glsl?raw";
-import fragmentSource from "./shader/fragmentShader.glsl?raw";
+import vertexSource from "./shader/vertexShader.glsl";
+import fragmentSource from "./shader/fragmentShader.glsl";
 
 import img from '../images/image.jpg';
 
