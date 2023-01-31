@@ -25,11 +25,6 @@ class Main {
     this.material = null;
     this.mesh = null;
 
-    this.viewport = {
-      width: window.innerWidth,
-      height: window.innerHeight
-    };
-
     this.uniforms = {
       uTime: {
         value: 0.0
@@ -44,6 +39,8 @@ class Main {
         value: new THREE.Vector2(2048, 1024)
       },
     };
+
+    this.clock = new THREE.Clock();
 
     this.init();
     // this._init();
@@ -121,8 +118,8 @@ class Main {
   }
 
   _update() {
-
-    this.uniforms.uTime.value += 0.03;
+    const elapsedTime = this.clock.getElapsedTime();
+    this.uniforms.uTime.value = elapsedTime * 0.03;
 
     //レンダリング
     this.renderer.render(this.scene, this.camera);
